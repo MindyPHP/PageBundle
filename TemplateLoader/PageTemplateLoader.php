@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of Mindy Framework.
- * (c) 2017 Maxim Falaleev
+ * (c) 2018 Maxim Falaleev
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -10,15 +12,16 @@
 
 namespace Mindy\Bundle\PageBundle\TemplateLoader;
 
-use Mindy\Finder\TemplateFinderInterface;
+use Mindy\Template\Finder\ChainFinder;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpKernel\KernelInterface;
 
 class PageTemplateLoader implements PageTemplateLoaderInterface
 {
     /**
-     * @var TemplateFinderInterface
+     * @var ChainFinder
      */
-    protected $templateFinder;
+    protected $finder;
 
     /**
      * @var string
@@ -28,13 +31,13 @@ class PageTemplateLoader implements PageTemplateLoaderInterface
     /**
      * PageTemplateLoader constructor.
      *
-     * @param string                  $basePath
-     * @param TemplateFinderInterface $templateFinder
+     * @param KernelInterface $kernel
+     * @param ChainFinder     $chainFinder
      */
-    public function __construct($basePath, TemplateFinderInterface $templateFinder)
+    public function __construct(KernelInterface $kernel, ChainFinder $chainFinder)
     {
-        $this->basePath = $basePath;
-        $this->templateFinder = $templateFinder;
+        $this->basePath = $kernel->getRootDir();
+        $this->finder = $chainFinder;
     }
 
     /**
@@ -42,7 +45,7 @@ class PageTemplateLoader implements PageTemplateLoaderInterface
      *
      * @return string
      */
-    protected function formatPath($path)
+    protected function formatPath($path): string
     {
         return sprintf('%s/page/templates', $path);
     }
@@ -50,11 +53,9 @@ class PageTemplateLoader implements PageTemplateLoaderInterface
     /**
      * @return array
      */
-    protected function fetchCorrectPaths()
+    protected function fetchCorrectPaths(): array
     {
-        $paths = $this->templateFinder->getPaths();
-
-        return array_filter($paths, function ($path) {
+        return array_filter($this->finder->getPaths(), function ($path) {
             return is_dir($this->formatPath($path));
         });
     }
@@ -62,23 +63,21 @@ class PageTemplateLoader implements PageTemplateLoaderInterface
     /**
      * @return array
      */
-    public function getTemplates()
+    public function getTemplates(): array
     {
         $templates = [];
         foreach ($this->fetchCorrectPaths() as $path) {
-            $targetPath = $this->formatPath($path);
-
             $finder = (new Finder())
                 ->ignoreUnreadableDirs()
                 ->files()
-                ->in($targetPath)
+                ->in($this->formatPath($path))
                 ->name('*.html');
 
             foreach ($finder as $template) {
                 /* @var $template \SplFileInfo */
-                $path = $template->getRealPath();
+                $key = substr($template->getRealPath(), strlen($this->basePath) + 1);
 
-                $templates[substr($path, strlen($this->basePath) + 1)] = $template->getBasename();
+                $templates[$key] = $template->getBasename();
             }
         }
 

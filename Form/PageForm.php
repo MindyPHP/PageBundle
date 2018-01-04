@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of Mindy Framework.
- * (c) 2017 Maxim Falaleev
+ * (c) 2018 Maxim Falaleev
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -11,16 +13,17 @@
 namespace Mindy\Bundle\PageBundle\Form;
 
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
-use Mindy\Bundle\AdminBundle\Form\Type\ButtonsType;
 use Mindy\Bundle\FormBundle\Form\DataTransformer\DateTimeTransformer;
 use Mindy\Bundle\FormBundle\Form\Type\FileType;
 use Mindy\Bundle\FormBundle\Form\Type\SlugType;
 use Mindy\Bundle\PageBundle\Model\Page;
 use Mindy\Bundle\PageBundle\TemplateLoader\PageTemplateLoaderInterface;
+use Mindy\Bundle\SeoBundle\Form\Type\SeoFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -39,7 +42,7 @@ class PageForm extends AbstractType
      *
      * @param PageTemplateLoaderInterface $templateLoader
      */
-    public function __construct(PageTemplateLoaderInterface $templateLoader)
+    public function __construct(PageTemplateLoaderInterface $templateLoader = null)
     {
         $this->templateLoader = $templateLoader;
     }
@@ -50,6 +53,7 @@ class PageForm extends AbstractType
 
         $builder
             ->add('parent', ChoiceType::class, [
+                'label' => 'Родительская страница',
                 'required' => false,
                 'choices' => Page::objects()->order(['root', 'lft'])->all(),
                 'choice_label' => function ($page) {
@@ -96,10 +100,6 @@ class PageForm extends AbstractType
                     ]),
                 ],
             ])
-            ->add('is_index', CheckboxType::class, [
-                'label' => 'Главная страница',
-                'required' => false,
-            ])
             ->add('is_published', CheckboxType::class, [
                 'label' => 'Опубликовано',
                 'required' => false,
@@ -122,7 +122,14 @@ class PageForm extends AbstractType
                     return $instance->view_children == $item;
                 },
             ])
-            ->add('buttons', ButtonsType::class);
+            ->add('seo', SeoFormType::class, [
+                'label' => 'Мета информация',
+                'source' => $instance,
+                'mapped' => false,
+            ])
+            ->add('submit', SubmitType::class, [
+                'label' => 'Сохранить',
+            ]);
 
         $builder->get('published_at')->addModelTransformer(new DateTimeTransformer());
     }

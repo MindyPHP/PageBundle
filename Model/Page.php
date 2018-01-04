@@ -1,8 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 /*
  * This file is part of Mindy Framework.
- * (c) 2017 Maxim Falaleev
+ * (c) 2018 Maxim Falaleev
  *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
@@ -35,8 +37,7 @@ use Mindy\Orm\TreeModel;
  * @property string|null $image
  * @property string $sorting
  *
- * @method static \Mindy\Bundle\PageBundle\Model\PageManager objects($instance = null)
- * @method static \Mindy\Bundle\PageBundle\PageBundle getBundle()
+ * @method static PageManager objects($instance = null)
  */
 class Page extends TreeModel implements AbsoluteUrlInterface
 {

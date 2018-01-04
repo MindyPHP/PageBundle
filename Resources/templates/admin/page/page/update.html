@@ -1,1 +1,14 @@
-{% extends "admin/admin/create.html" %}
+{% extends "admin/base.html" %}
+
+{% block breadcrumbs %}
+    {% set breadcrumbs = [
+    ['name' => 'Страницы', 'url' => url('admin_rise_page_page_list')],
+    ['name' => 'Редактирование страницы: ' ~ page]
+    ] %}
+    {% parent %}
+{% endblock %}
+
+{% block content %}
+    <h1 class="b-heading">Редактирование страницы: {{ page }}</h1>
+    {{ form_render(form)|safe }}
+{% endblock %}

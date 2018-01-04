@@ -1,0 +1,21 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: false
+
+    _instanceof:
+        Mindy\Template\Library\LibraryInterface:
+            public: true
+            tags: ['template.library']
+
+        Mindy\Sitemap\SitemapProviderInterface:
+            tags: ['sitemap.provider']
+
+    Mindy\Bundle\PageBundle\:
+        resource: '../../*'
+        exclude: '../../{Model,Migrations,Tests,vendor}'
+
+    Mindy\Bundle\PageBundle\Controller\:
+        resource: '../../Controller'
+        tags: ['controller.service_arguments']

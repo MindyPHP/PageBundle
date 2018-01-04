@@ -1,0 +1,7 @@
+<td class="b-table__td">
+    {% set arrow = '<i class="b-icon">&#xE5DA;</i>' %}
+    {{ arrow|repeat(page.level - 1)|safe }} {{ page }}
+</td>
+<td class="b-table__td">
+    {{ page.url }}
+</td>

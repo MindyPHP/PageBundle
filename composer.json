@@ -1,20 +1,25 @@
 {
     "name": "mindy/page-bundle",
     "license": "MIT",
-    "require": {
-        "php": ">=5.5.9",
-        "mindy/orm-bundle": "~3.0",
-        "mindy/pagination-bundle": "~3.0",
-        "mindy/sitemap-bundle": "~3.0",
-        "mindy/template-bundle": "~3.0",
-        "mindy/mindy-bundle": "~3.0",
-        "mindy/ckeditor-bundle": "~3.0"
+    "config": {
+        "preferred-install": {
+            "*": "dist"
+        },
+        "sort-packages": true
     },
-    "suggest": {
-        "mindy/admin-bundle": "The Administrator panel for Mindy Framework"
+    "require": {
+        "php": ">=7.0",
+        "mindy/ckeditor-bundle": "~4.0",
+        "mindy/form-bundle": ">=4.0.3",
+        "mindy/mindy-bundle": "~4.0",
+        "mindy/orm-bundle": "~4.0",
+        "mindy/pagination-bundle": "~4.0",
+        "mindy/seo-bundle": "~4.0",
+        "mindy/sitemap-bundle": "~4.0",
+        "mindy/template-bundle": "~4.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.0"
+        "phpunit/phpunit": "^6.5"
     },
     "autoload": {
         "psr-4": {
@@ -27,12 +32,6 @@
     "autoload-dev": {
         "psr-4": {
             "Mindy\\Bundle\\PageBundle\\Tests\\": "./Tests/"
-        }
-    },
-    "minimum-stability": "dev",
-    "extra": {
-        "branch-alias": {
-            "dev-master": "1.2-dev"
         }
     }
 }

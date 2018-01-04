@@ -1,0 +1,6 @@
+page_view:
+    path: /{url}
+    defaults:
+        _controller: \Mindy\Bundle\PageBundle\Controller\PageController::view
+    requirements:
+        url: .*
