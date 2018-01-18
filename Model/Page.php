@@ -14,6 +14,7 @@ namespace Mindy\Bundle\PageBundle\Model;
 
 use Mindy\Bundle\MindyBundle\Traits\AbsoluteUrlInterface;
 use Mindy\Bundle\MindyBundle\Traits\AbsoluteUrlTrait;
+use Mindy\Bundle\SeoBundle\Seo\SeoSourceInterface;
 use Mindy\Orm\Fields\AutoSlugField;
 use Mindy\Orm\Fields\BooleanField;
 use Mindy\Orm\Fields\CharField;
@@ -31,6 +32,8 @@ use Mindy\Orm\TreeModel;
  * @property Page $parent
  * @property string|int $published_at
  * @property string|null $view_children
+ * @property string $content_short
+ * @property string $content
  * @property bool|int $is_index
  * @property string $view
  * @property string $url
@@ -39,7 +42,7 @@ use Mindy\Orm\TreeModel;
  *
  * @method static PageManager objects($instance = null)
  */
-class Page extends TreeModel implements AbsoluteUrlInterface
+class Page extends TreeModel implements AbsoluteUrlInterface, SeoSourceInterface
 {
     use AbsoluteUrlTrait;
 
@@ -217,5 +220,45 @@ class Page extends TreeModel implements AbsoluteUrlInterface
     public function getAbsoluteUrl()
     {
         return $this->generateUrl('page_view', ['url' => $this->url]);
+    }
+
+    /**
+     * @return string
+     */
+    public function getCanonicalSource()
+    {
+        return $this->getAbsoluteUrl();
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitleSource()
+    {
+        return $this->name;
+    }
+
+    /**
+     * @return string
+     */
+    public function getKeywordsSource()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @return string
+     */
+    public function getDescriptionSource()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @return array
+     */
+    public function getOgSource()
+    {
+        return [];
     }
 }
