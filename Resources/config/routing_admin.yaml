@@ -1,9 +1,9 @@
-admin_rise_page_page_list:
+admin_page_page_list:
     path: /page/list
     defaults:
         _controller: PageBundle:Admin/Page:list
 
-admin_rise_page_page_create:
+admin_page_page_create:
     path: /page/create/{id}
     defaults:
         _controller: PageBundle:Admin/Page:create
@@ -11,14 +11,14 @@ admin_rise_page_page_create:
     requirements:
         id: \d+
 
-admin_rise_page_page_update:
+admin_page_page_update:
     path: /page/update/{id}
     defaults:
         _controller: PageBundle:Admin/Page:update
     requirements:
         id: \d+
 
-admin_rise_page_page_remove:
+admin_page_page_remove:
     path: /page/remove/{id}
     defaults:
         _controller: PageBundle:Admin/Page:remove
