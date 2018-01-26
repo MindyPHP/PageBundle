@@ -1,12 +1,7 @@
 {
     "name": "mindy/page-bundle",
     "license": "MIT",
-    "config": {
-        "preferred-install": {
-            "*": "dist"
-        },
-        "sort-packages": true
-    },
+    "minimum-stability": "dev",
     "require": {
         "php": ">=7.0",
         "mindy/ckeditor-bundle": "~4.0",
