@@ -39,14 +39,13 @@ class PageController extends Controller
         ]);
 
         if ($form->handleRequest($request) && $form->isValid()) {
-            $page = $form->getData();
             if (false === $page->save()) {
                 throw new \RuntimeException('Error while save menu');
             }
 
             $this->get('event_dispatcher')->dispatch(
                 SeoEvent::EVENT_NAME,
-                new SeoEvent($form->get('seo')->getData(), $page)
+                new SeoEvent($page)
             );
 
             $this->addFlash('success', 'Страница успешно сохранена');
@@ -79,7 +78,7 @@ class PageController extends Controller
 
             $this->get('event_dispatcher')->dispatch(
                 SeoEvent::EVENT_NAME,
-                new SeoEvent($form->get('seo')->getData(), $page)
+                new SeoEvent($page)
             );
 
             $this->addFlash('success', 'Страница успешно сохранена');

@@ -15,6 +15,7 @@ namespace Mindy\Bundle\PageBundle\Model;
 use Mindy\Bundle\MindyBundle\Traits\AbsoluteUrlInterface;
 use Mindy\Bundle\MindyBundle\Traits\AbsoluteUrlTrait;
 use Mindy\Bundle\SeoBundle\Seo\SeoSourceInterface;
+use Mindy\Bundle\SeoBundle\Seo\SeoTrait;
 use Mindy\Orm\Fields\AutoSlugField;
 use Mindy\Orm\Fields\BooleanField;
 use Mindy\Orm\Fields\CharField;
@@ -44,6 +45,7 @@ use Mindy\Orm\TreeModel;
  */
 class Page extends TreeModel implements AbsoluteUrlInterface, SeoSourceInterface
 {
+    use SeoTrait;
     use AbsoluteUrlTrait;
 
     public static function getFields()
